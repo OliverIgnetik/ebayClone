@@ -1,8 +1,6 @@
 const express = require('express');
 const passport = require('passport');
-const User = require('../models/User');
 const router = express.Router();
-
 
 // get the login page
 router.get('/', (req, res, next) => {
@@ -11,8 +9,8 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', passport.authenticate('localLogin',{
-    successRedirect:'/account',
-    failureRedirect:'/login'
+    // use passport strategy to redirect after check
+    successRedirect:'/account'
 }));
 
 module.exports = router;
