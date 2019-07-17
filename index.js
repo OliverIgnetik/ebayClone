@@ -3,10 +3,13 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 
+
 // set up mongoose
 const mongoose = require('mongoose');
 const passport = require('passport');
 const session = require('express-session');
+const dotenv = require('dotenv');
+const bcryptjs = require('bcryptjs');
 
 // ROUTES
 // auth is a function so you have to pass it an arguement
@@ -45,8 +48,9 @@ app.use(express.static(path.join(__dirname,'public')));
 
 // session set up 
 app.use(session({
-    // everyone must relog if this is changed
-	secret: 'session_key',
+    // everyone must relog if this is changed 
+    // hash secret key
+	secret: bcryptjs.hashSync(process.env.SECRET+'',10),
 	resave: true,
 	saveUninitialized: true
 }));
@@ -61,7 +65,7 @@ app.use('/login',login);
 app.use('/account',account);
 // error handling
 app.use((err,req,res,next)=>{
-    // error has to be an object
+    // render is expecting an error object
     res.render('error',{message:err.message});
 })
 
