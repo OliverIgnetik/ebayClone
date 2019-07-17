@@ -62,7 +62,15 @@
                 </ol>
             </div>
             <div class="col-4">
-                col 2
+                <h3>My Items</h3>
+                <ol>{{#interested}}
+                <li>
+                        <div class='p-2 my-2 item'>
+                            {{!-- hjs knows items has these properties --}}
+                            {{name}} <br> <a href="/account/removeitem/{{id}}" class="my-2 btn btn-info">remove</a>
+                        </div>
+                    </li>
+                {{/interested}}</ol>
             </div>
         </div>
     </div>
