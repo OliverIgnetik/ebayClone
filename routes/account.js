@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
         res.redirect('/');
         return;
     }
-    Model.find(null, (err, items) => {
+    Item.find(null, (err, items) => {
         if (err) {
             return next(err)
         }
@@ -29,6 +29,31 @@ router.get('/', (req, res) => {
         res.render('account', data);
     });
 
+});
+
+router.get('/additem/:itemid', (req, res,next) => {
+    // passport binds user to req.user
+    const user = req.user;
+
+    // just incase there is no user
+    if (user == null) {
+        res.redirect('/');
+        return;
+    }
+
+    // grab the id
+    const itemid =req.params.itemid;
+    
+    Item.findById(itemid,(err,item)=>{
+    if(err) return next(err);
+    
+    if(item.interested.indexOf(user._id)==-1){
+        item.interested.push(user._id);
+        // save the item after you add the interested user id
+        item.save();
+    }
+
+    })
 });
 
 router.get('/logout', (req, res) => {

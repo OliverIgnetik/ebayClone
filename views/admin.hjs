@@ -13,11 +13,6 @@
             background: #f9f9f9;
             border: 1px solid #ddd;
         }
-
-        .item div>* {
-            margin: 1%;
-        }
-
         ol {
             list-style: none;
             padding-left: 0;
@@ -64,7 +59,7 @@
                         <input type="text" class="form-control" placeholder="Price" name='price'>
                     </div>
                     <br>
-                    <button type="submit" class="btn btn-primary" value="Add Item">Submit</button>
+                    <button type="submit" class="btn btn-info" value="Add Item">Submit</button>
                 </form>
             </div>
             <div class='col-6'>
@@ -74,8 +69,9 @@
                     {{#items}}
                     <li>
                         <div class='p-2 my-2 item'>
-                            {{!-- hjs knows items has this property --}}
-                            {{name}} <br> <button type="button" class="btn btn-info">Add</button>
+                            {{name}}
+                            <br>
+                            <button type="button" class="my-2 btn btn-info">Add</button>
                         </div>
                     </li>
                     {{/items}}
