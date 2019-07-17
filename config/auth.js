@@ -1,5 +1,7 @@
 const passportLocal = require('passport-local').Strategy;
+const bcryptjs = require('bcryptjs');
 const User = require('../models/User');
+
 
 module.exports = (passport) => {
     // default config
@@ -36,10 +38,9 @@ module.exports = (passport) => {
                     return next(new Error('User not found'));
                 }
                 // check password
-                if (user.password != req.body.password) {
+                if (bcryptjs.compareSync(password,user.password)==false) {
                     return next(new Error('incorrect password'));
                 }
-
                 return next(null, user);
             })
         })
@@ -56,15 +57,11 @@ module.exports = (passport) => {
         },
         // email = req.email
         (req, email, password, next) => {
-            // checks
-            console.log(email);
-            console.log(password);
             
             // LOCAL STRATEGY
             User.findOne({
                 email: email
             }, (err, user) => {
-                console.log(user);
                 // Check for errors and pass to handler
                 if (err) {
                     return next(err);
@@ -73,8 +70,10 @@ module.exports = (passport) => {
                 if (user != null) {
                     return next(new Error('You already have an account, please login'));
                 }
+                // create the user with hashed pw
+                const hashedPw = bcryptjs.hashSync(password,10);
 
-                User.create({email:email, password:password}, (err, user) => {
+                User.create({email:email, password:hashedPw}, (err, user) => {
                     if (err)
                         return next(err)
     
