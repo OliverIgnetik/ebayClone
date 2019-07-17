@@ -38,7 +38,7 @@ module.exports = (passport) => {
                     return next(new Error('User not found'));
                 }
                 // check password
-                if (bcryptjs.compareSync(password,user.password)==false) {
+                if (bcryptjs.compareSync(password, user.password) == false) {
                     return next(new Error('incorrect password'));
                 }
                 return next(null, user);
@@ -57,7 +57,7 @@ module.exports = (passport) => {
         },
         // email = req.email
         (req, email, password, next) => {
-            
+
             // LOCAL STRATEGY
             User.findOne({
                 email: email
@@ -71,12 +71,18 @@ module.exports = (passport) => {
                     return next(new Error('You already have an account, please login'));
                 }
                 // create the user with hashed pw
-                const hashedPw = bcryptjs.hashSync(password,10);
-
-                User.create({email:email, password:hashedPw}, (err, user) => {
+                const hashedPw = bcryptjs.hashSync(password, 10);
+                let isAdmin = false;
+                if (email.indexOf('@zenva.com') != -1)
+                    isAdmin = true
+                User.create({
+                    email: email,
+                    password: hashedPw,
+                    isAdmin:isAdmin
+                }, (err, user) => {
                     if (err)
                         return next(err)
-    
+
                     next(null, user)
                 })
             });

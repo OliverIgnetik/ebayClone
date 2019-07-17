@@ -3,22 +3,24 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 
-
 // set up mongoose
 const mongoose = require('mongoose');
 const passport = require('passport');
 const session = require('express-session');
+// auth is a function so you have to pass it an arguement
+// you wont use this again
+const auth = require('./config/auth')(passport);
 const dotenv = require('dotenv');
 const bcryptjs = require('bcryptjs');
 
 // ROUTES
-// auth is a function so you have to pass it an arguement
-const auth = require('./config/auth')(passport);
 const home  = require('./routes/home.js');
 const register  = require('./routes/register.js');
 const login = require('./routes/login');
 const account = require('./routes/account');
+const admin = require('./routes/admin');
 
+// set up mongoose connection
 mongoose.Promise = global.Promise;
 
 // Connect MongoDB at default port 27017.
@@ -58,11 +60,12 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// set up routes
+// connect routes
 app.use('/',home);
 app.use('/register',register);
 app.use('/login',login);
 app.use('/account',account);
+app.use('/admin',admin);
 // error handling
 app.use((err,req,res,next)=>{
     // render is expecting an error object

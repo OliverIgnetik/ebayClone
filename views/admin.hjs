@@ -5,30 +5,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>User Dashboard</title>
+    <title>Admin</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        .item {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+        }
+
+        .item div>* {
+            margin: 1%;
+        }
+
+        ol {
+            list-style: none;
+            padding-left: 0;
+            margin-left: 0
+        }
+    </style>
 </head>
-<style>
-    .item {
-        background: #f9f9f9;
-        border: 1px solid #ddd;
-    }
-
-    .item div >* {
-        margin: 1%;
-    }
-
-    ol {
-        list-style: none;
-        padding-left: 0;
-        margin-left: 0
-    }
-</style>
 
 <body>
     {{!-- NAVBAR --}}
-    <nav class="navbar p-4 navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light p-4">
         <a class="navbar-brand" href="#">Sample Store</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,10 +48,27 @@
     {{!-- NAVBAR --}}
     {{!-- CONTENT CONTAINER --}}
     <div class='container'>
-        <h1>Welcome: {{user.email}}</h1>
+        <h1>Admin Page</h1>
+        <hr>
         <div class="row">
-            <div class="col-8">
-                <h3>Items for Sale</h3>
+            <div class="col-6">
+                <h3>Add an Item</h3>
+                <form class="my-2" action="/admin/additem" method="POST">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Name" name='name'>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Description" name='description'>
+                    </div>
+                    <div class="from-group">
+                        <input type="text" class="form-control" placeholder="Price" name='price'>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary" value="Add Item">Submit</button>
+                </form>
+            </div>
+            <div class='col-6'>
+                <h3>Current Items</h3>
                 <ol>
                     {{!-- loop through items --}}
                     {{#items}}
@@ -63,9 +80,6 @@
                     </li>
                     {{/items}}
                 </ol>
-            </div>
-            <div class="col-4">
-                col 2
             </div>
         </div>
     </div>
