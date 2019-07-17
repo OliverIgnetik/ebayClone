@@ -1,10 +1,10 @@
+// modules
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 
 // set up mongoose
 const mongoose = require('mongoose');
-// ./ one step up 
 // ROUTES
 const home  = require('./routes/home.js');
 const register  = require('./routes/register.js');
@@ -24,7 +24,6 @@ mongoose.connect('mongodb://localhost:27017/sample-store', {
     }
 });
 
-
 // use express for app
 const app = express();
 
@@ -42,6 +41,12 @@ app.use(express.static(path.join(__dirname,'public')));
 app.use('/',home);
 app.use('/register',register);
 app.use('/login',login);
+// error handling
+app.use((err,req,res,next)=>{
+    // error has to be an object
+    res.render('error',{message:err.message});
+})
+
 
 // listen for app
 app.listen(3000, () => {
