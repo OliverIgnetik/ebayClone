@@ -32,7 +32,7 @@
     </nav>
     {{!-- NAVBAR --}}
     {{!-- FORM CONTAINER --}}
-    <div class='container'>
+    <div class='container p-4'>
         <h1>Register</h1>
         <form action="/register" method="post">
             <div class="form-group">
@@ -48,6 +48,18 @@
             </div>
             <button type="submit" class="btn btn-info">Submit</button>
         </form>
+    <br>
+         <h1>Forgot your password</h1>
+        <form action="/account/passwordReset" method="post">
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" name='email' id="email" aria-describedby="emailHelp"
+                    placeholder="Enter email">
+            </div>
+            <button type="submit" class="btn btn-info">Send</button>
+        </form>
+
+
     </div>
     {{!-- FORM CONTAINER --}}
 

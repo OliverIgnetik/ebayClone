@@ -1,6 +1,11 @@
+
 const express = require('express');
+const mailgunJs = require('mailgun-js');
 const Item = require('../models/Item');
+const User = require('../models/User');
 const router = express.Router();
+const bcryptjs = require('bcryptjs');
+
 
 
 // ACCOUNT ROUTE IS CALLED UPON THE LOGIN ROUTE
@@ -63,7 +68,6 @@ router.get('/additem/:itemid', (req, res, next) => {
             res.redirect('/account');
         }
 
-        res.redirect('/account');
 
     })
 });
@@ -74,7 +78,8 @@ router.get('/removeitem/:itemid', (req, res, next) => {
 
     // just incase there is no user
     if (user == null) {
-        res.redirect('/');
+        // remember redirect need specific path
+        res.redirect('/account');
         return;
     }
 
@@ -96,12 +101,50 @@ router.get('/removeitem/:itemid', (req, res, next) => {
     })
 });
 
+router.post('/passwordReset', (req, res,next) => {
+    // store the email
+    const email = req.body.email;
+
+    // find this user
+    User.findOne({email:email},(err,user)=>{
+        if(err) return next(err)
+        
+        // create nonce
+        user.nonce = bcryptjs.hashSync('reset').slice(0,10);
+        user.passwordResetTime = new Date();
+        user.save();
+
+        const mailgun=mailgunJs({
+            apiKey:process.env.MAILGUNAPI,
+            domain:process.env.DOMAIN
+        });
+
+        const data= {
+            to : email,
+            from: 'olli@ozemail.com.au',
+            sender:'Sample Store',
+            subject:'Password reset request',
+            html:`Please <a href="http://localhost:5000/account/passwordReset?nonce=`+user.nonce+`&id=`+user._id+`">click here</a> to reset your password. This link is valid for 24 hours`
+        };
+
+        mailgun.messages().send(data,(err,body)=>{
+            if (err) return next(err);
+
+            // successful
+            res.json({
+                user:user
+            });
+        })
+
+    })
+
+    // send an email to their account
+});
 router.get('/logout', (req, res) => {
+    
     // passport binds user to req.user
     req.logOut();
-    res.json({
-        confirmation: 'logged out',
-    })
+    res.redirect('/');
 });
 
 module.exports = router;

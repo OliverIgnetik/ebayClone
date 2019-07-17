@@ -73,8 +73,9 @@ module.exports = (passport) => {
                 // create the user with hashed pw
                 const hashedPw = bcryptjs.hashSync(password, 10);
                 let isAdmin = false;
-                if (email.indexOf('@zenva.com') != -1)
-                    isAdmin = true
+                if (email.indexOf('@zenva.com') != -1){
+                    isAdmin = true;
+                }
                 User.create({
                     email: email,
                     password: hashedPw,

@@ -1,4 +1,5 @@
 // modules
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -10,7 +11,6 @@ const session = require('express-session');
 // auth is a function so you have to pass it an arguement
 // you wont use this again
 const auth = require('./config/auth')(passport);
-const dotenv = require('dotenv');
 const bcryptjs = require('bcryptjs');
 
 // ROUTES
