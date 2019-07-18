@@ -140,6 +140,54 @@ router.post('/passwordReset', (req, res,next) => {
 
     // send an email to their account
 });
+
+router.get('/passwordReset', (req, res,next) => {
+    // user who has recieved an email
+    const nonce  = req.query.nonce; 
+    const id = req.query.id;
+    if(nonce==null||id==null){
+        return next(new Error('Invalid Request'))
+    }
+
+    User.findById(id,(err,user)=>{
+        if(err){
+        return next(new Error('Invalid Request'));
+        }
+        // checking for errors
+        if(user.passwordResetTime==null){
+            return next(new Error('Invalid Request'));
+        }
+        if(user.nonce==null){
+            return next(new Error('Invalid Request'));
+        }
+
+        // checking the nonce assigned to the user against the query nonce
+        if(nonce!=user.nonce){
+            return next(new Error('Invalid Request'));
+        }
+
+        // check to see 24 hr elapsed
+        const now = new Date();
+
+        // time in ms since reset 
+        const diff = (now - user.passwordResetTime)/1000/60/60;
+
+        if (diff > 24){
+            return next(new Error('Invalid Request'));
+        }
+
+        // using this this data object means you can add more
+        // items when you render
+        const data = {
+            user:user,
+            nonce:nonce
+        }
+        // valid request 
+        res.render('resetPassword',data);
+    })   
+    
+});
+
 router.get('/logout', (req, res) => {
     
     // passport binds user to req.user
