@@ -124,7 +124,7 @@ router.post('/passwordReset', (req, res,next) => {
             from: 'olli@ozemail.com.au',
             sender:'Sample Store',
             subject:'Password reset request',
-            html:`Please <a href="http://localhost:5000/account/passwordReset?nonce=`+user.nonce+`&id=`+user._id+`">click here</a> to reset your password. This link is valid for 24 hours`
+            html:`Please <a href="http://localhost:3000/account/passwordReset?nonce=`+user.nonce+`&id=`+user._id+`">click here</a> to reset your password. This link is valid for 24 hours`
         };
 
         mailgun.messages().send(data,(err,body)=>{
@@ -187,6 +187,58 @@ router.get('/passwordReset', (req, res,next) => {
     })   
     
 });
+
+router.post('/newpassword',(req,res,next)=>{
+    // set new password
+    const password = req.body.password;
+    const passwordCheck = req.body.password;
+    const nonce = req.body.nonce;
+    const id = req.body.id;
+
+    if(id==null||password==null||passwordCheck==null||id==null){
+        return next(new Error('Invalid request'));
+    }
+
+    // check to see if passwords match
+    if(password!=passwordCheck){
+        return next(new Error('Passwords do not match'));
+    }
+
+    User.findById(id,(err,user)=>{
+        if(err){
+        return next(err);
+        }
+        // checking for errors
+        if(user.passwordResetTime==null){
+            return next(new Error('Invalid Request'));
+        }
+        if(user.nonce==null){
+            return next(new Error('Invalid Request'));
+        }
+
+        // checking the nonce assigned to the user against the query nonce
+        if(nonce!=user.nonce){
+            return next(new Error('Invalid Request'));
+        }
+
+        // check to see 24 hr elapsed
+        const now = new Date();
+
+        // time in ms since reset 
+        const diff = (now - user.passwordResetTime)/1000/60/60;
+
+        if (diff > 24){
+            return next(new Error('Invalid Request'));
+        }
+
+        // set new password 
+
+        user.password = bcryptjs.hashSync(password,10)
+        user.save();
+        res.redirect('/');
+    });
+
+})
 
 router.get('/logout', (req, res) => {
     
