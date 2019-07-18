@@ -146,24 +146,24 @@ router.get('/passwordReset', (req, res,next) => {
     const nonce  = req.query.nonce; 
     const id = req.query.id;
     if(nonce==null||id==null){
-        return next(new Error('Invalid Request'))
+        return next(new Error('Invalid Request null'))
     }
 
     User.findById(id,(err,user)=>{
         if(err){
-        return next(new Error('Invalid Request'));
+        return next(new Error('Invalid Request err find'));
         }
         // checking for errors
         if(user.passwordResetTime==null){
-            return next(new Error('Invalid Request'));
+            return next(new Error('Invalid Request reset time'));
         }
         if(user.nonce==null){
-            return next(new Error('Invalid Request'));
+            return next(new Error('Invalid Request nonce null'));
         }
 
         // checking the nonce assigned to the user against the query nonce
         if(nonce!=user.nonce){
-            return next(new Error('Invalid Request'));
+            return next(new Error('Invalid Request nonce match'));
         }
 
         // check to see 24 hr elapsed
@@ -173,7 +173,7 @@ router.get('/passwordReset', (req, res,next) => {
         const diff = (now - user.passwordResetTime)/1000/60/60;
 
         if (diff > 24){
-            return next(new Error('Invalid Request'));
+            return next(new Error('Invalid Request token expired'));
         }
 
         // using this this data object means you can add more
@@ -196,12 +196,17 @@ router.post('/newpassword',(req,res,next)=>{
     const id = req.body.id;
 
     if(id==null||password==null||passwordCheck==null||id==null){
-        return next(new Error('Invalid request'));
+        console.log(id);
+        console.log(password);
+        console.log(nonce);
+        console.log(passwordCheck);
+        
+        return next(new Error('Invalid request null'));
     }
 
     // check to see if passwords match
     if(password!=passwordCheck){
-        return next(new Error('Passwords do not match'));
+        return next(new Error('Passwords do not match password match'));
     }
 
     User.findById(id,(err,user)=>{
@@ -210,15 +215,15 @@ router.post('/newpassword',(req,res,next)=>{
         }
         // checking for errors
         if(user.passwordResetTime==null){
-            return next(new Error('Invalid Request'));
+            return next(new Error('Invalid Request rest time null'));
         }
         if(user.nonce==null){
-            return next(new Error('Invalid Request'));
+            return next(new Error('Invalid Request nonce null'));
         }
 
         // checking the nonce assigned to the user against the query nonce
         if(nonce!=user.nonce){
-            return next(new Error('Invalid Request'));
+            return next(new Error('Invalid Request nonce match'));
         }
 
         // check to see 24 hr elapsed
@@ -228,12 +233,12 @@ router.post('/newpassword',(req,res,next)=>{
         const diff = (now - user.passwordResetTime)/1000/60/60;
 
         if (diff > 24){
-            return next(new Error('Invalid Request'));
+            return next(new Error('Invalid Request token expired'));
         }
 
         // set new password 
 
-        user.password = bcryptjs.hashSync(password,10)
+        user.password = bcryptjs.hashSync(password,10);
         user.save();
         res.redirect('/');
     });
