@@ -35,7 +35,7 @@
                     <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/login">Login</a>
+                    <a class="nav-link" href="/account/logout">Login</a>
                 </li>
             </ul>
         </div>

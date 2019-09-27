@@ -191,7 +191,7 @@ router.get('/passwordReset', (req, res,next) => {
 router.post('/newpassword',(req,res,next)=>{
     // set new password
     const password = req.body.password;
-    const passwordCheck = req.body.password;
+    const passwordCheck = req.body.passwordCheck;
     const nonce = req.body.nonce;
     const id = req.body.id;
 
@@ -206,7 +206,7 @@ router.post('/newpassword',(req,res,next)=>{
 
     // check to see if passwords match
     if(password!=passwordCheck){
-        return next(new Error('Passwords do not match password match'));
+        return next(new Error('Passwords do not match'));
     }
 
     User.findById(id,(err,user)=>{
