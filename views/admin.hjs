@@ -6,13 +6,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/styles.css">
     <style>
         .item {
             background: #f9f9f9;
             border: 1px solid #ddd;
+            max-width: 20rem;
         }
+
+        .item img {
+            width: 100%;
+            max-width: 20rem;
+        }
+
+        .form-control {
+            margin: 1rem auto;
+        }
+
+        .form-control[name="price"] {
+            margin-bottom: 0;
+        }
+
         ol {
             list-style: none;
             padding-left: 0;
@@ -35,6 +52,9 @@
                     <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="/account">Account</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/account/logout">Login</a>
                 </li>
             </ul>
@@ -46,7 +66,7 @@
         <h1>Admin Page</h1>
         <hr>
         <div class="row">
-            <div class="col-6">
+            <div class="col-12 col-md-6">
                 <h3>Add an Item</h3>
                 <form class="my-2" action="/admin/additem" method="POST">
                     <div class="form-group">
@@ -56,22 +76,25 @@
                         <input type="text" class="form-control" placeholder="Description" name='description'>
                     </div>
                     <div class="from-group">
+                        <input type="text" class="form-control" placeholder="image url" name='image_url'>
+                    </div>
+                    <div class="from-group">
                         <input type="text" class="form-control" placeholder="Price" name='price'>
                     </div>
                     <br>
                     <button type="submit" class="btn btn-info" value="Add Item">Submit</button>
                 </form>
             </div>
-            <div class='col-6'>
-                <h3>Current Items</h3>
+            <div class="col-12 col-md-6">
+                <h3>Items in Stock</h3>
                 <ol>
                     {{!-- loop through items --}}
                     {{#items}}
                     <li>
                         <div class='p-2 my-2 item'>
-                            {{name}}
-                            <br>
-                            <button type="button" class="my-2 btn btn-info">Add</button>
+                            <img src={{image_url}} alt="">
+                            <p>{{name}}</p>
+                            <a href="/admin/removeitem/{{id}}" class="my-2 btn btn-info">Remove</a>
                         </div>
                     </li>
                     {{/items}}
@@ -80,7 +103,17 @@
         </div>
     </div>
     {{!-- CONTENT CONTAINER --}}
-
+    <footer class="bg-light">
+        <div class="social-container">
+            <ul class="social-icons">
+                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                <li><a href="#"><i class="fa fa-codepen"></i></a></li>
+            </ul>
+        </div>
+        <p style="text-align: center;">&copy; 2019 All Rights Reserved</p>
+    </footer>
     {{!-- JAVASCRIPT --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

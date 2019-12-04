@@ -6,20 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>User Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="./css/styles.css">
 </head>
 <style>
     .item {
         background: #f9f9f9;
         border: 1px solid #ddd;
+        max-width: 20rem;
     }
 
+    .item img {
+        width: 100%;
+        max-width: 20rem;
+    }
 
-    ol {
+    .item ol {
         list-style: none;
         padding-left: 0;
         margin-left: 0
+    }
+
+    li {
+        list-style: none;
     }
 </style>
 
@@ -37,6 +48,9 @@
                     <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="/admin">Adminstrators login</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/account/logout">Logout</a>
                 </li>
             </ul>
@@ -47,34 +61,54 @@
     <div class='container'>
         <h1>Welcome: {{user.email}}</h1>
         <div class="row">
-            <div class="col-8">
+            <div class="col-12 col-md-6">
                 <h3>Items for Sale</h3>
                 <ol>
                     {{!-- loop through items --}}
                     {{#items}}
                     <li>
                         <div class='p-2 my-2 item'>
+                            <img src={{image_url}} alt="">
                             {{!-- hjs knows items has these properties --}}
-                            {{name}} <br> <a href="/account/additem/{{id}}" class="my-2 btn btn-info">Add</a>
+                            <h2>
+                                {{name}}
+                            </h2>
+                            <a href="/account/additem/{{id}}" class="my-2 btn btn-info">Add</a>
                         </div>
                     </li>
                     {{/items}}
                 </ol>
             </div>
-            <div class="col-4">
+            <div class="col-12 col-md-6">
                 <h3>My Items</h3>
                 <ol>{{#interested}}
-                <li>
+                    <li>
                         <div class='p-2 my-2 item'>
+                            <img src={{image_url}} alt="">
                             {{!-- hjs knows items has these properties --}}
-                            {{name}} <br> <a href="/account/removeitem/{{id}}" class="my-2 btn btn-info">remove</a>
+                            <h2>
+                                {{name}}
+                            </h2>
+                            <a href="/account/removeitem/{{id}}" class="my-2 btn btn-info">Remove</a>
                         </div>
                     </li>
-                {{/interested}}</ol>
+                    {{/interested}}</ol>
             </div>
         </div>
     </div>
     {{!-- CONTENT CONTAINER --}}
+
+    <footer class="bg-light">
+        <div class="social-container">
+            <ul class="social-icons">
+                <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                <li><a href="#"><i class="fa fa-codepen"></i></a></li>
+            </ul>
+        </div>
+        <p style="text-align: center;">&copy; 2019 All Rights Reserved</p>
+    </footer>
 
     {{!-- JAVASCRIPT --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.min.js"></script>
