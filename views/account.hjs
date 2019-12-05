@@ -15,18 +15,16 @@
     .item {
         background: #f9f9f9;
         border: 1px solid #ddd;
-        max-width: 20rem;
     }
 
     .item img {
         width: 100%;
-        max-width: 20rem;
     }
 
     .item ol {
         list-style: none;
         padding-left: 0;
-        margin-left: 0
+        margin-left: 0;
     }
 
     li {
@@ -66,7 +64,7 @@
         <div class="row">
             <div class="col-12 col-md-6">
                 <h3>Items for Sale</h3>
-                <ol>
+                <ol style="padding-inline-start: 0;">
                     {{!-- loop through items --}}
                     {{#items}}
                     <li>
@@ -84,7 +82,7 @@
             </div>
             <div class="col-12 col-md-6">
                 <h3>My Items</h3>
-                <ol>{{#interested}}
+                <ol style="padding-inline-start: 0;">{{#interested}}
                     <li>
                         <div class='p-2 my-2 item'>
                             <img src={{image_url}} alt="">

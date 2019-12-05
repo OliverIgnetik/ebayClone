@@ -14,12 +14,10 @@
         .item {
             background: #f9f9f9;
             border: 1px solid #ddd;
-            max-width: 20rem;
         }
 
         .item img {
             width: 100%;
-            max-width: 20rem;
         }
 
         .form-control {
@@ -87,7 +85,7 @@
             </div>
             <div class="col-12 col-md-6">
                 <h3>Items in Stock</h3>
-                <ol>
+                <ol style="padding-inline-start: 0;">
                     {{!-- loop through items --}}
                     {{#items}}
                     <li>
