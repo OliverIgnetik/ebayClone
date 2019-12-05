@@ -38,7 +38,7 @@
     {{!-- NAVBAR --}}
     {{!-- FORM CONTAINER --}}
     <div class='container p-4'>
-        <h1>Login</h1>
+        <h2>Login</h2>
         <form action="/login" method="post">
             <div class="form-group">
                 <label for="email">Email address</label>
@@ -51,17 +51,33 @@
                 <label for="password">Password</label>
                 <input type="password" class="form-control" name='password' id="password" placeholder="Password">
             </div>
-            <button type="submit" class="btn btn-info">Submit</button>
+            <button type="submit" class="btn btn-info">login</button>
         </form>
         <br>
-        <h1>Forgot your password</h1>
+        <h2>Register</h2>
+        <form action="/register" method="post">
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" name='email' id="email" aria-describedby="emailHelp"
+                    placeholder="Enter email">
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                    else.</small>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" name='password' id="password" placeholder="Password">
+            </div>
+            <button type="submit" class="btn btn-info">register</button>
+        </form>
+        <br>
+        <h2>Forgot your password</h2>
         <form action="/account/passwordReset" method="post">
             <div class="form-group">
                 <label for="email">Email address</label>
                 <input type="email" class="form-control" name='email' id="email" aria-describedby="emailHelp"
                     placeholder="Enter email">
             </div>
-            <button type="submit" class="btn btn-info">Send</button>
+            <button type="submit" class="btn btn-info">send</button>
         </form>
 
 
@@ -76,7 +92,12 @@
                 <li><a href="#"><i class="fa fa-codepen"></i></a></li>
             </ul>
         </div>
-        <p style="text-align: center;">&copy; 2019 All Rights Reserved</p>
+        <p style="text-align: center;">&copy; <span id="copyright-year">2019</span> All Rights Reserved</p>
+        <script>
+            // set the year
+            let year = new Date().getUTCFullYear();
+            document.getElementById('copyright-year').innerText = (String(year));
+        </script>
     </footer>
     {{!-- JAVASCRIPT --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.min.js"></script>

@@ -5,6 +5,17 @@ const User = require('../models/User');
 const router = express.Router();
 const bcryptjs = require('bcryptjs');
 
+// randomString function for nonce
+const randomString = length => {
+  let text = '';
+  const possible =
+    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  for (let i = 0; i < length; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
+};
+
 // ACCOUNT ROUTE IS CALLED UPON THE LOGIN ROUTE
 // during the passport call
 router.get('/', (req, res) => {
@@ -100,7 +111,8 @@ router.post('/passwordReset', (req, res, next) => {
     if (err) return next(err);
 
     // create nonce
-    user.nonce = bcryptjs.hashSync('reset').slice(0, 10);
+    const random_token = randomString(5);
+    user.nonce = bcryptjs.hashSync(random_token).slice(0, 10);
     user.passwordResetTime = new Date();
     user.save();
 
@@ -109,24 +121,31 @@ router.post('/passwordReset', (req, res, next) => {
       domain: process.env.DOMAIN,
     });
 
+    // use css inliner tool from mailchimp
+    const html = `
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" style="box-sizing: border-box;">
+    <div class="jumbotron" style="box-sizing: border-box;padding: 2rem 1rem;margin-bottom: 2rem;background-color: #e9ecef;border-radius: .3rem;">
+    <h1 class="display-4" style="box-sizing: border-box;margin-top: 0;margin-bottom: .5rem;font-weight: 300;line-height: 1.2;font-size: 3.5rem;">Password Reset</h1>
+    <p class="lead" style="box-sizing: border-box;margin-top: 0;margin-bottom: 1rem;orphans: 3;widows: 3;font-size: 1.25rem;font-weight: 300;">Follow the link below to reset your password</p>
+    <hr class="my-4" style="box-sizing: content-box;height: 0;overflow: visible;margin-top: 1.5rem!important;margin-bottom: 1.5rem!important;border: 0;border-top: 1px solid rgba(0,0,0,.1);">
+    <p style="box-sizing: border-box;margin-top: 0;margin-bottom: 1rem;orphans: 3;widows: 3;">This link is valid for 24 hours</p>
+    <p class="lead" style="box-sizing: border-box;margin-top: 0;margin-bottom: 1rem;orphans: 3;widows: 3;font-size: 1.25rem;font-weight: 300;">
+      <a class="btn btn-primary btn-lg" href="http://localhost:3000/account/passwordReset?nonce=${user.nonce}&id=${user._id}" role="button" style="box-sizing: border-box;color: #fff;text-decoration: none;background-color: #17a2b8;display: inline-block;font-weight: 400;text-align: center;vertical-align: middle;-webkit-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;border: 1px solid transparent;padding: .5rem 1rem;font-size: 1.25rem;line-height: 1.5;border-radius: .3rem;transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;border-color: #007bff;">Reset password</a>
+    </p>
+    </div>`;
+
     const data = {
       to: email,
       from: 'olli@ozemail.com.au',
       sender: 'Sample Store',
       subject: 'Password reset request',
-      html: `Please 
-      <a href="http://localhost:3000/account/passwordReset?nonce=${user.nonce}&id=${user._id}">
-        click here
-      </a> to reset your password. This link is valid for 24 hours`,
+      html: html,
     };
 
     mailgun.messages().send(data, (err, body) => {
       if (err) return next(err);
-
       // successful
-      res.json({
-        user: user,
-      });
+      res.render('mailgun_success', data);
     });
   });
 

@@ -39,7 +39,7 @@
     </nav>
     {{!-- NAVBAR --}}
     {{!-- ERROR CONTAINER --}}
-    <div class='container'>
+    <div class='container p-4'>
         <h1>Error: {{message}}</h1>
     </div>
     {{!-- ERROR CONTAINER --}}
@@ -52,7 +52,12 @@
                 <li><a href="#"><i class="fa fa-codepen"></i></a></li>
             </ul>
         </div>
-        <p style="text-align: center;">&copy; 2019 All Rights Reserved</p>
+        <p style="text-align: center;">&copy; <span id="copyright-year">2019</span> All Rights Reserved</p>
+        <script>
+            // set the year
+            let year = new Date().getUTCFullYear();
+            document.getElementById('copyright-year').innerText = (String(year));
+        </script>
     </footer>
     {{!-- JAVASCRIPT --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.min.js"></script>
