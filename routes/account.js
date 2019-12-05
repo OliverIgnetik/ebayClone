@@ -123,6 +123,7 @@ router.post('/passwordReset', (req, res, next) => {
 
     // use css inliner tool from mailchimp
     const html = `
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     <div class="jumbotron" style="box-sizing: border-box;padding: 2rem 1rem;margin-bottom: 2rem;background-color: #e9ecef;border-radius: .3rem;">
     <h1 class="display-4" style="box-sizing: border-box;margin-top: 0;margin-bottom: .5rem;font-weight: 300;line-height: 1.2;font-size: 3.5rem;">Password Reset</h1>
     <p class="lead" style="box-sizing: border-box;margin-top: 0;margin-bottom: 1rem;orphans: 3;widows: 3;font-size: 1.25rem;font-weight: 300;">Follow the link below to reset your password</p>
